@@ -1,0 +1,25 @@
+# Render Blueprint for the backend.
+# NOTE: persistent disks require a paid instance; on the free plan SQLite is wiped on every redeploy/restart.
+services:
+  - type: web
+    name: resilientai-backend
+    runtime: docker
+    rootDir: backend
+    dockerfilePath: ./Dockerfile
+    plan: starter
+    healthCheckPath: /health
+    disk:
+      name: app-data
+      mountPath: /data
+      sizeGB: 1
+    envVars:
+      - key: DATABASE_URL
+        value: sqlite:////data/app.db
+      - key: MODEL_NAME
+        value: gemini/gemini-3.5-flash-lite
+      - key: ENABLE_FAILURE_SIMULATION
+        value: "true"
+      - key: LLM_API_KEYS
+        sync: false        # set the real value in the Render dashboard
+      - key: ALLOWED_ORIGINS
+        sync: false        # e.g. https://your-app.vercel.app

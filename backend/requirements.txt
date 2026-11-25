@@ -1,0 +1,10 @@
+fastapi==0.165.0
+uvicorn[standard]==0.54.0
+SQLAlchemy==2.1.9
+litellm==1.110.3
+pydantic==2.14.4
+# litellm 1.110.x imports these on every cache HIT (via its proxy modules) but
+# does not declare them as dependencies. Without them a cache hit crashes, and
+# behind the Router that crash looks like a key failure -> 503 for cached prompts.
+orjson==3.13.0
+soundfile==0.14.0
